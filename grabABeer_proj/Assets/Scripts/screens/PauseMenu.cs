@@ -30,7 +30,7 @@ namespace Duarto.GrabABeer.Screens {
             ScreenManager.Instance.RemoveScreen(myTypeScreen);
         }
         public void OpenSettings(){
-            //ScreenManager.Instance.ChangeScreen(GameScreens.Settings,myTypeScreen);
+            ScreenManager.Instance.ChangeScreen(GameScreens.Settings,myTypeScreen);
         }
         public void MainMenu(){
             Application.Quit();

@@ -19,6 +19,7 @@ namespace Duarto.GrabABeer.Manager {
         public TextMeshProUGUI countdownText;
         bool timmerRunning = false;
         public bool goingFromGameplay;
+        public float sensitivity;
 
 //*****START METHOD**************************************************************************************************************************// 
         void Awake() {
@@ -42,9 +43,14 @@ namespace Duarto.GrabABeer.Manager {
             if((countdownValue >= 0f)&&timmerRunning&&!isGamePaused) {
                 countdownValue -= Time.deltaTime; //update countdown
                 countdownText.text = Mathf.Round(countdownValue).ToString();
-            }
-            if (countdownValue <= 0.1f) { 
-                Debug.Log("PERDISTE"); 
+                if(countdownValue <= 10.5f){
+                    countdownText.color = Color.red;
+                    countdownText.fontSize = 150;
+                    countdownText.rectTransform.anchoredPosition = new Vector3(0,0,0);
+                    countdownText.gameObject.GetComponent<CanvasGroup>().alpha = 0.2f;
+                }
+            } else if (countdownValue <= 0.1f) {
+                PlayerController.Instance.currentSpeed = 0;
                 timmerRunning = false;
                 isGamePaused = true;
                 Cursor.visible = true;
@@ -52,6 +58,7 @@ namespace Duarto.GrabABeer.Manager {
                 ScreenManager.Instance.AddScreen(GameScreens.Fail); 
                 countdownValue = 60f;
             }
+            
 
             if(gameStart){
                 if(Input.GetButtonDown("Pause")) {

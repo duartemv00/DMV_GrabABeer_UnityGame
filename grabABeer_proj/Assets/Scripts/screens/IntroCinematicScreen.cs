@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Duarto.GrabABeer.Manager;
+using UnityEngine.SceneManagement;
 
 namespace Duarto.GrabABeer.Screens {
     public class IntroCinematicScreen : ScreenWindow {
@@ -58,7 +59,7 @@ namespace Duarto.GrabABeer.Screens {
             yield return new WaitForSeconds(3f);
             frame04.GetComponent<CanvasGroup>().alpha = 1;
             yield return new WaitForSeconds(3f);
-            ScreenManager.Instance.ChangeScreen(GameScreens.Game,myTypeScreen);
+            SceneManager.LoadScene("secondScene");
         }
 
 //*****HIDE SCREEN LOGIC********************************************************************************************************************// 
@@ -73,6 +74,7 @@ namespace Duarto.GrabABeer.Screens {
             yield return new WaitForSeconds(1f);
             isAnimationRunning = false;
             myScreen.SetActive(false);
+            SceneManager.LoadScene("secondScene");
         }
     }
 }

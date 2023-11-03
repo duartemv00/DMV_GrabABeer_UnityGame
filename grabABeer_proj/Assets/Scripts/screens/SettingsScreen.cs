@@ -25,7 +25,7 @@ namespace Duarto.GrabABeer.Screens {
 
 //*****LOGIC OF THE BUTTONS*****************************************************************************************************************//
         public void SettingsBack(){
-            ScreenManager.Instance.ChangeScreen(GameScreens.Pause,myTypeScreen);
+            ScreenManager.Instance.RemoveScreen(myTypeScreen);
         }
 
 //*****SHOW SCREEN LOGIC********************************************************************************************************************// 
@@ -40,11 +40,11 @@ namespace Duarto.GrabABeer.Screens {
         IEnumerator Co_InitSequence(){ // This function activate an animation that only is shown when the user open the app
             isAnimationRunning = true;
 
-            menu.anchoredPosition = new Vector2(menuAnchored.x,menuAnchored.y + Screen.height * 2);
+            menu.anchoredPosition = new Vector2(-(menuAnchored.x + Screen.width * 2), menuAnchored.y);
             yield return new WaitForEndOfFrame();
 
             //entran titulo y botones
-            menu.DOAnchorPosY(menuAnchored.y,0.8f).SetEase(Ease.InOutBack).OnComplete(() => {  
+            menu.DOAnchorPosX(menuAnchored.x,0.4f).OnComplete(() => {  
                 isAnimationRunning = false;
             }); 
         }
@@ -56,7 +56,7 @@ namespace Duarto.GrabABeer.Screens {
         IEnumerator Co_Hide(){
             isAnimationRunning = true;
             yield return new WaitForEndOfFrame();
-            menu.DOAnchorPosY(Screen.height * 2,0.8f).SetEase(Ease.InOutBack).OnComplete(() => {
+            menu.DOAnchorPosX(-Screen.width * 2,0.4f).OnComplete(() => {
                 isAnimationRunning = false;
                 myScreen.SetActive(false);
             });

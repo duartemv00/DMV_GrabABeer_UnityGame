@@ -23,7 +23,7 @@ namespace Duarto.GrabABeer.Screens {
             myScreen.SetActive(true);
             if(!GetParametersAreSet()) {
                 SetParameters();
-                GetParametersAreSet(true);
+                SetParametersAreSet(true);
             }
             ResetPositions();
         }
@@ -38,7 +38,7 @@ namespace Duarto.GrabABeer.Screens {
         }
 
 //******************************************************************************************************************************************// 
-        public void GetParametersAreSet(bool value) {
+        public void SetParametersAreSet(bool value) {
             parametersAreSet = value;
         }
     }

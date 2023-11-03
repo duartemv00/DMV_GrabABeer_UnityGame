@@ -9,18 +9,23 @@ using UnityEngine.SceneManagement;
 namespace Duarto.GrabABeer.Screens {
     public class IntroCinematicScreen : ScreenWindow {
         
-        //SCREEN COMPONENTS
+        //Screen components
         public RectTransform cinematic;
         public RectTransform frame01;
         public RectTransform frame02;
         public RectTransform frame03;
         public RectTransform frame04;
+        public RectTransform frame05;
+        public RectTransform frame06;
+        public RectTransform frame07;
+        public RectTransform frame08;
+        public RectTransform hintText;
         public RectTransform fadeOutScreen;
 
-        //SCREEN COMPONENTS POSITIONS
+        //Screen components anchors
         Vector2 cinematicAnchored;
 
-//******************************************************************************************************************************************// 
+//********************// 
         public override void SetParameters(){
             cinematicAnchored = cinematic.anchoredPosition;
         }
@@ -28,17 +33,31 @@ namespace Duarto.GrabABeer.Screens {
             cinematic.anchoredPosition = cinematicAnchored;
         }
 
-//*****UPDATE METHOD***********************************************************************************************************************//
+//**********UPDATE **********//
         void Update(){
-            if(Input.GetButtonDown("Attack")){ //SALTAR CINEMATICA
-                ScreenManager.Instance.ChangeScreen(GameScreens.Game,myTypeScreen);
+            if(Input.anyKey){ //Skip cutscene
+                Hide();
             }
         }
 
-//*****SHOW SCREEN LOGIC********************************************************************************************************************// 
+//**********SHOW SCREEN ANIMATION********************// 
         public override void Show(){
             base.Show();
             StartCoroutine(Co_InitSequence());
+            StartCoroutine(Co_HintText());
+        }
+        IEnumerator Co_HintText(){
+            while(true) {
+                while(hintText.GetComponent<CanvasGroup>().alpha < 0.5) {
+                    hintText.GetComponent<CanvasGroup>().alpha += Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                }
+                yield return new WaitForSeconds(1f);
+                while(hintText.GetComponent<CanvasGroup>().alpha > 0) {
+                    hintText.GetComponent<CanvasGroup>().alpha -= Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                };
+            }
         }
         IEnumerator Co_InitSequence(){ // This function activate an animation that only is shown when the user open the app
             isAnimationRunning = true;
@@ -47,6 +66,10 @@ namespace Duarto.GrabABeer.Screens {
             frame02.GetComponent<CanvasGroup>().alpha = 0;
             frame03.GetComponent<CanvasGroup>().alpha = 0;
             frame04.GetComponent<CanvasGroup>().alpha = 0;
+            frame05.GetComponent<CanvasGroup>().alpha = 0;
+            frame06.GetComponent<CanvasGroup>().alpha = 0;
+            frame07.GetComponent<CanvasGroup>().alpha = 0;
+            frame08.GetComponent<CanvasGroup>().alpha = 0;
             cinematic.anchoredPosition = new Vector2(cinematicAnchored.x,cinematicAnchored.y+Screen.height*2);
             yield return new WaitForEndOfFrame();
 
@@ -58,11 +81,19 @@ namespace Duarto.GrabABeer.Screens {
             frame03.GetComponent<CanvasGroup>().alpha = 1;
             yield return new WaitForSeconds(3f);
             frame04.GetComponent<CanvasGroup>().alpha = 1;
-            yield return new WaitForSeconds(3f);
-            SceneManager.LoadScene("secondScene");
+            yield return new WaitForSeconds(0.5f);
+            frame05.GetComponent<CanvasGroup>().alpha = 1;
+            yield return new WaitForSeconds(0.5f);
+            frame06.GetComponent<CanvasGroup>().alpha = 1;
+            yield return new WaitForSeconds(0.5f);
+            frame07.GetComponent<CanvasGroup>().alpha = 1;
+            yield return new WaitForSeconds(0.5f);
+            frame08.GetComponent<CanvasGroup>().alpha = 1;
+            yield return new WaitForSeconds(2f);
+            Hide();
         }
 
-//*****HIDE SCREEN LOGIC********************************************************************************************************************// 
+//***************HIDE SCREEN ANIMATION********************// 
         public override void Hide(){
             StartCoroutine(Co_Hide());
         }
@@ -74,7 +105,7 @@ namespace Duarto.GrabABeer.Screens {
             yield return new WaitForSeconds(1f);
             isAnimationRunning = false;
             myScreen.SetActive(false);
-            SceneManager.LoadScene("secondScene");
+            SceneManager.LoadScene("gameScene");
         }
     }
 }

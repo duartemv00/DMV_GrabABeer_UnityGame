@@ -8,21 +8,31 @@ using UnityEngine.UI;
 namespace Duarto.GrabABeer.Manager {
 
     //This class control all game's sound
-    public class AudioManager :  Singleton<AudioManager>{ 
-        public AudioSource as_click; //SFX when clicking a button
-        public AudioSource as_takeBeer;
-        public AudioSource as_cashRegister;
-        public List<AudioClip> ac_takeItem = new List<AudioClip>();
-        public AudioSource as_takeItem;
-        public AudioSource as_passPage;
+    public class AudioManager :  Singleton<AudioManager>{
 
-        //VOLUME SETTINGS
+        [Header("Configuration components")] //Volume settings
         public AudioMixer mixer;
         public Slider masterVolumeSlider;
         public Slider musicVolumeSlider;
         public Slider SFXVolumeSlider;
+        
+        [Header("Audio Sources")]
+        [Header("SFX")]
+        public AudioSource as_click; //SFX when clicking a button
+        public AudioSource as_back; //SFX when clicking a button back
+        public AudioSource as_takeBeer;
+        public AudioSource as_cashRegister;
+        public List<AudioClip> ac_takeItem = new List<AudioClip>();
+        public AudioSource as_takeItem;
+        
+        [Header("Ambience")]
+        public AudioSource as_ambience;
 
-//************************************************************************************************
+        [Header("Music")]
+        public AudioSource as_music;
+        public AudioSource as_sadMusic;
+
+//**********START**********//
         private void Start() {
             if(PlayerPrefs.HasKey("masterVolume")) {
 
@@ -48,30 +58,43 @@ namespace Duarto.GrabABeer.Manager {
             
         }
 
-//************************************************************************************************
-        public void Click() { // This function active a click sound when the user do a click in a button
+//**********PLAY/STOP AUDIO**********//
+        //MUSIC
+        public void StartMusic() { //Supermarket music
+            as_music.Play();
+        }
+        public void SadMusic() { //Sad (losing) music
+            as_sadMusic.Play();
+        }
+        public void StopMusic() {
+            as_music.Stop();
+        }
+        //NIGHT AMBIENCE
+        public void StopAmbience() {
+            as_ambience.Stop();
+        }
+        //UI SFX
+        public void Click() {
             as_click.Play();
         }
 
+        public void Back() {
+            as_back.Play();
+        }
+        //INGAME SFX
         public void TakeBeer() {
             as_takeBeer.Play();
         }
-
-        public void TakeItem() { // This function active a sound when the card is moved to a side
+        public void TakeItem() { //This function take a random sound for every time you take an item
             as_takeItem.clip = ac_takeItem[Random.Range(0,ac_takeItem.Count)];
             as_takeItem.pitch = Random.Range(1,1.2f);
             as_takeItem.Play();
         }
-
-        public void PassPage() { // This function activates a shuffling sound when the game starts.
-            as_passPage.Play();
-        }
-
         public void CashRegister() {
             as_cashRegister.Play();
         }
 
-//************************************************************************************************
+//**********AUDIO SETTINGS**********//
         public void ChangeMasterVolumenBySlider() { // Modify the sound volume 
             mixer.SetFloat("MasterVolume",Mathf.Log10(masterVolumeSlider.value)*20);
             PlayerPrefs.SetFloat("masterVolume",masterVolumeSlider.value);

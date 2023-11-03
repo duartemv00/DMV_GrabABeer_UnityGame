@@ -9,12 +9,12 @@ using TMPro;
 namespace Duarto.GrabABeer.Screens {
     public class PointsScreen : ScreenWindow {
         
-        //SCREEN COMPONENTS
+        //Screen components
         public RectTransform menu;
         public TextMeshProUGUI points_text;
         public TextMeshProUGUI timeLeft_text;
 
-        //SCREEM COMPONENTS POSITIONS
+        //Screen components anchors
         Vector2 menuAnchored;
 
 //******************************************************************************************************************************************// 
@@ -40,7 +40,7 @@ namespace Duarto.GrabABeer.Screens {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             points_text.text = GameManager.Instance.GetPoints().ToString();
-            timeLeft_text.text = GameManager.Instance.GetTimeLeft().ToString();
+            timeLeft_text.text = GameManager.Instance.GetTimeLeft().ToString() + " s";
             StartCoroutine(Co_InitSequence());
         }
         IEnumerator Co_InitSequence(){ // This function activate an animation that only is shown when the user open the app

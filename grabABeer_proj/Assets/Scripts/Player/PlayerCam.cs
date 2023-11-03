@@ -9,21 +9,17 @@ namespace Duarto.GrabABeer.Player{
     {
         //SENSITIVITY
         public float sens;
-        public Slider sensSlider;
-
+        public Slider sensSlider; //sens settings slider
         public Transform orientation;
-
         float xRotation;
         float yRotation;
 
         void Start(){
-            if(PlayerPrefs.HasKey("sens")) {
+            if(PlayerPrefs.HasKey("sens")) { } else { PlayerPrefs.SetFloat("sens",1); }
 
-            } else {
-                PlayerPrefs.SetFloat("sens",1);
-            }
+            //Set initial sens
             sensSlider.value = PlayerPrefs.GetFloat("sens");
-            ChangeSens();
+            ChangeSens(); 
         }
 
         void Update()

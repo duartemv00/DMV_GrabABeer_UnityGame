@@ -8,13 +8,13 @@ using Duarto.GrabABeer.Manager;
 namespace Duarto.GrabABeer.Screens {
     public class PauseMenu : ScreenWindow {
         
-        //SCREEN COMPONENTS
+        //Screen components
         public RectTransform menu;
 
-        //SCREEM COMPONENTS POSITIONS
+        //Screen components anchors
         Vector2 menuAnchored;
 
-//******************************************************************************************************************************************// 
+//**********// 
         public override void SetParameters(){ //stablish initial positions
             menuAnchored = menu.anchoredPosition;
         }
@@ -22,21 +22,15 @@ namespace Duarto.GrabABeer.Screens {
             menu.anchoredPosition = menuAnchored;
         }
 
-//*****LOGIC OF THE BUTTONS*****************************************************************************************************************//
-        public void ContinueGame(){
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            GameManager.Instance.SetPauseState(false);
-            ScreenManager.Instance.RemoveScreen(myTypeScreen);
-        }
+//**********LOGIC OF THE BUTTONS**********//
         public void OpenSettings(){
-            ScreenManager.Instance.ChangeScreen(GameScreens.Settings,myTypeScreen);
+            ScreenManager.Instance.AddScreen(GameScreens.Settings);
         }
         public void MainMenu(){
             Application.Quit();
         }
 
-//*****SHOW SCREEN LOGIC********************************************************************************************************************// 
+//**********SHOW SCREEN ANIM**********// 
         public override void Show(){
             base.Show();
             Cursor.visible = true;
@@ -50,22 +44,21 @@ namespace Duarto.GrabABeer.Screens {
 
             yield return new WaitForEndOfFrame();
 
-            menu.DOAnchorPosX(menuAnchored.x,0.8f).SetEase(Ease.InOutSine);
+            menu.DOAnchorPosX(menuAnchored.x,0.3f).SetEase(Ease.InOutSine);
                 
             isAnimationRunning = false;
         }
 
-//*****HIDE SCREEN LOGIC********************************************************************************************************************// 
+//**********HIDE SCREEN ANIM**********// 
         public override void Hide(){
             StartCoroutine(Co_Hide());
         }
         IEnumerator Co_Hide(){
             isAnimationRunning = true;
             yield return new WaitForEndOfFrame();
-            menu.DOAnchorPosX(-Screen.width * 2,0.8f).SetEase(Ease.InOutSine).OnComplete(() => {
+            menu.DOAnchorPosX(-Screen.width * 2,0.3f).SetEase(Ease.InOutSine).OnComplete(() => {
                 isAnimationRunning = false;
-                myScreen.SetActive(false);
-            });     
+            });
         }
     }
 }
